@@ -1,0 +1,33 @@
+{
+  "name": "lunch-money",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/lunch-money/lunch-money-js.git"
+  },
+  "keywords": [
+    "lunch-money",
+    "lunchmoney"
+  ],
+  "author": "Joe Hoyle",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lunch-money/lunch-money-js/issues"
+  },
+  "homepage": "https://github.com/lunch-money/lunch-money-js#readme",
+  "devDependencies": {
+    "@types/isomorphic-fetch": "^0.0.35",
+    "@types/node": "^13.9.3",
+    "typescript": "^3.8.3"
+  },
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "isomorphic-fetch": "^2.2.1"
+  }
+}
