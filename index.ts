@@ -75,7 +75,10 @@ export default class LunchMoney {
 
 		let url = `${ base }${ endpoint }`;
 		if ( method === 'GET' && args ) {
-			url += '?' + Object.entries( args ).map( ( [ key, value ] ) => `${ key }=${ value }` )
+			url += '?';
+			url += Object.entries( args )
+									 .map( ( [ key, value ] ) => `${ key }=${ value }` )
+									 .join( "&" );
 		}
 		const headers = new Headers();
 		headers.set( 'Accept', '*/*' );
