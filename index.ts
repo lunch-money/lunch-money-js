@@ -77,8 +77,8 @@ export default class LunchMoney {
 		if ( method === 'GET' && args ) {
 			url += '?';
 			url += Object.entries( args )
-									 .map( ( [ key, value ] ) => `${ key }=${ value }` )
-									 .join( "&" );
+				.map( ( [ key, value ] ) => `${ key }=${ value }` )
+				.join( "&" );
 		}
 		const headers = new Headers();
 		headers.set( 'Accept', '*/*' );
