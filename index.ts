@@ -11,6 +11,29 @@ export interface Asset {
 	institution_name?: string,
 }
 
+export interface PlaidAccount {
+  id: number;
+  date_linked: string;
+  name: string;
+  type: "credit" | "depository" | "brokerage" | "cash" | "loan" | "Investment";
+  subtype?: string;
+  mask: string;
+  institution_name: string;
+  status:
+    | "active"
+    | "inactive"
+    | "relink"
+    | "syncing"
+    | "error"
+    | "not found"
+    | "not supported";
+  last_import: string;
+  balance: number;
+  currency: string;
+  balance_last_update: string;
+  limit?: number;
+}
+
 export interface Transaction {
 	id: number,
 	date: string,
@@ -103,6 +126,10 @@ export default class LunchMoney {
 
 	async getAssets() : Promise<Asset[]> {
 		return this.get( '/v1/assets' );
+	}
+
+	async getPlaidAccounts() : Promise<PlaidAccount[]> {
+		return ( await this.get( '/v1/plaid_accounts' ) ).plaid_accounts;
 	}
 
 	async getTransactions( args?: TransactionsEndpointArguments ) : Promise<Transaction[]> {

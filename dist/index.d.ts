@@ -6,6 +6,21 @@ export interface Asset {
     balance: number;
     institution_name?: string;
 }
+export interface PlaidAccount {
+    id: number;
+    date_linked: string;
+    name: string;
+    type: "credit" | "depository" | "brokerage" | "cash" | "loan" | "Investment";
+    subtype?: string;
+    mask: string;
+    institution_name: string;
+    status: "active" | "inactive" | "relink" | "syncing" | "error" | "not found" | "not supported";
+    last_import: string;
+    balance: number;
+    currency: string;
+    balance_last_update: string;
+    limit?: number;
+}
 export interface Transaction {
     id: number;
     date: string;
@@ -56,6 +71,7 @@ export default class LunchMoney {
     post(endpoint: string, args?: EndpointArguments): Promise<any>;
     request(method: "GET" | "POST" | "PUT" | "DELETE", endpoint: string, args?: EndpointArguments): Promise<any>;
     getAssets(): Promise<Asset[]>;
+    getPlaidAccounts(): Promise<PlaidAccount[]>;
     getTransactions(args?: TransactionsEndpointArguments): Promise<Transaction[]>;
     createTransactions(transactions: DraftTransaction[], applyRules?: boolean, checkForRecurring?: boolean, debitAsNegative?: boolean): Promise<any>;
 }
