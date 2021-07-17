@@ -32,7 +32,10 @@ class LunchMoney {
         return __awaiter(this, void 0, void 0, function* () {
             let url = `${base}${endpoint}`;
             if (method === 'GET' && args) {
-                url += '?' + Object.entries(args).map(([key, value]) => `${key}=${value}`);
+                url += '?';
+                url += Object.entries(args)
+                    .map(([key, value]) => `${key}=${value}`)
+                    .join('&');
             }
             const headers = new Headers();
             headers.set('Accept', '*/*');
@@ -58,6 +61,11 @@ class LunchMoney {
     getAssets() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.get('/v1/assets');
+        });
+    }
+    getPlaidAccounts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.get('/v1/plaid_accounts')).plaid_accounts;
         });
     }
     getTransactions(args) {
