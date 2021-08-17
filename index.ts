@@ -3,35 +3,48 @@ import fetch from 'isomorphic-fetch';
 const base = 'https://dev.lunchmoney.app';
 
 export interface Asset {
-	id: number,
-	type_name: string,
-	subtype_name?: string,
-	name: string,
-	balance: number,
-	institution_name?: string,
+	id: number;
+	type_name: "employee compensation"
+	  | "cash"
+	  | "vehicle"
+	  | "loan"
+	  | "cryptocurrency"
+	  | "investment"
+	  | "other"
+	  | "credit"
+	  | "real estate";
+	subtype_name?: string | null;
+	name: string;
+	display_name?: string | null;
+	balance: string;
+	balance_as_of: string;
+	currency: string;
+	closed_on?: string | null;
+	institution_name?: string | null;
+	created_at: string;
 }
 
 export interface PlaidAccount {
-  id: number;
-  date_linked: string;
-  name: string;
-  type: "credit" | "depository" | "brokerage" | "cash" | "loan" | "Investment";
-  subtype?: string;
-  mask: string;
-  institution_name: string;
-  status:
-    | "active"
-    | "inactive"
-    | "relink"
-    | "syncing"
-    | "error"
-    | "not found"
-    | "not supported";
-  last_import: string;
-  balance: number;
-  currency: string;
-  balance_last_update: string;
-  limit?: number;
+	id: number;
+	date_linked: string;
+	name: string;
+	type: "credit" | "depository" | "brokerage" | "cash" | "loan" | "investment";
+	subtype?: string | null;
+	mask: string;
+	institution_name: string;
+	status:
+	  | "active"
+	  | "inactive"
+	  | "relink"
+	  | "syncing"
+	  | "error"
+	  | "not found"
+	  | "not supported";
+	last_import?: string | null;
+	balance: string;
+	currency: string;
+	balance_last_update: string;
+	limit?: number | null;
 }
 
 export interface Transaction {
