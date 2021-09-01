@@ -6,7 +6,6 @@
 npm install lunch-money
 ```
 
-(waiting NPM approval, not yet working!)
 
 The NPM module also makes types available to TypeScript.
 
