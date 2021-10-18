@@ -65,6 +65,19 @@ export interface Transaction {
 	external_id?: string,
 }
 
+export interface Category {
+	id:	number,
+	name:	string,
+	description:	string,
+	is_income:	boolean,
+	exclude_from_budget:	boolean,
+	exclude_from_totals:	boolean,
+	updated_at:	string,
+	created_at:	string,
+	is_group:	boolean,
+	group_id?: number,
+}
+
 export interface DraftTransaction {
 	date: string,
 	category_id?: number,
@@ -93,7 +106,7 @@ interface EndpointArguments {
 	[s: string]: any,
 }
 
-export default class LunchMoney {
+export class LunchMoney {
 	token: string;
 	constructor( args: { token: string } ) {
 		this.token = args.token;
@@ -149,6 +162,10 @@ export default class LunchMoney {
 		return ( await this.get( '/v1/transactions', args ) ).transactions;
 	}
 
+	async getCategories( ) : Promise<Category[]> {
+		return ( await this.get( '/v1/categories' ) ).categories;
+	}
+
 	async createTransactions( transactions: DraftTransaction[], applyRules = false, checkForRecurring = false, debitAsNegative = false ) : Promise<any> {
 		const response = await this.post( '/v1/transactions', {
 			transactions: transactions,
@@ -160,3 +177,6 @@ export default class LunchMoney {
 		return response;
 	}
 }
+
+
+export default LunchMoney;
