@@ -17,6 +17,9 @@
     "lunchmoney"
   ],
   "author": "Joe Hoyle",
+  "contributors": [
+    "Michael Bianco (https://mikebian.co/about)"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lunch-money/lunch-money-js/issues"
