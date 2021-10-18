@@ -43,6 +43,18 @@ export interface Transaction {
     tags?: Tag;
     external_id?: string;
 }
+export interface Category {
+    id: number;
+    name: string;
+    description: string;
+    is_income: boolean;
+    exclude_from_budget: boolean;
+    exclude_from_totals: boolean;
+    updated_at: string;
+    created_at: string;
+    is_group: boolean;
+    group_id?: number;
+}
 export interface DraftTransaction {
     date: string;
     category_id?: number;
@@ -67,7 +79,7 @@ export interface TransactionsEndpointArguments {
 interface EndpointArguments {
     [s: string]: any;
 }
-export default class LunchMoney {
+export declare class LunchMoney {
     token: string;
     constructor(args: {
         token: string;
@@ -78,6 +90,7 @@ export default class LunchMoney {
     getAssets(): Promise<Asset[]>;
     getPlaidAccounts(): Promise<PlaidAccount[]>;
     getTransactions(args?: TransactionsEndpointArguments): Promise<Transaction[]>;
+    getCategories(): Promise<Category[]>;
     createTransactions(transactions: DraftTransaction[], applyRules?: boolean, checkForRecurring?: boolean, debitAsNegative?: boolean): Promise<any>;
 }
-export {};
+export default LunchMoney;

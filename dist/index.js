@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LunchMoney = void 0;
 const isomorphic_fetch_1 = __importDefault(require("isomorphic-fetch"));
 const base = 'https://dev.lunchmoney.app';
 class LunchMoney {
@@ -48,7 +49,7 @@ class LunchMoney {
                 options.body = JSON.stringify(args);
                 headers.set('Content-Type', 'application/json');
             }
-            const response = yield isomorphic_fetch_1.default(url, options);
+            const response = yield (0, isomorphic_fetch_1.default)(url, options);
             if (response.status > 399) {
                 const r = yield response.text();
                 throw new Error(r);
@@ -73,6 +74,11 @@ class LunchMoney {
             return (yield this.get('/v1/transactions', args)).transactions;
         });
     }
+    getCategories() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.get('/v1/categories')).categories;
+        });
+    }
     createTransactions(transactions, applyRules = false, checkForRecurring = false, debitAsNegative = false) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.post('/v1/transactions', {
@@ -85,4 +91,5 @@ class LunchMoney {
         });
     }
 }
+exports.LunchMoney = LunchMoney;
 exports.default = LunchMoney;
