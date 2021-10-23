@@ -74,6 +74,7 @@ export interface Tag {
 export interface TransactionsEndpointArguments {
     start_date?: string;
     end_date?: string;
+    tag_id?: number;
     debit_as_negative?: boolean;
 }
 interface EndpointArguments {
@@ -86,11 +87,13 @@ export declare class LunchMoney {
     });
     get(endpoint: string, args?: EndpointArguments): Promise<any>;
     post(endpoint: string, args?: EndpointArguments): Promise<any>;
+    delete(endpoint: string, args?: EndpointArguments): Promise<any>;
     request(method: "GET" | "POST" | "PUT" | "DELETE", endpoint: string, args?: EndpointArguments): Promise<any>;
     getAssets(): Promise<Asset[]>;
     getPlaidAccounts(): Promise<PlaidAccount[]>;
     getTransactions(args?: TransactionsEndpointArguments): Promise<Transaction[]>;
     getCategories(): Promise<Category[]>;
-    createTransactions(transactions: DraftTransaction[], applyRules?: boolean, checkForRecurring?: boolean, debitAsNegative?: boolean): Promise<any>;
+    createCategory(name: string, description: string, isIncome: boolean, excludeFromBudget: boolean, excludeFromTotals: boolean): Promise<any>;
+    createTransactions(transactions: DraftTransaction[], applyRules?: boolean, checkForRecurring?: boolean, debitAsNegative?: boolean, skipBalanceUpdate?: boolean): Promise<any>;
 }
 export default LunchMoney;

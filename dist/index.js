@@ -29,6 +29,11 @@ class LunchMoney {
             return this.request('POST', endpoint, args);
         });
     }
+    delete(endpoint, args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('DELETE', endpoint, args);
+        });
+    }
     request(method, endpoint, args) {
         return __awaiter(this, void 0, void 0, function* () {
             let url = `${base}${endpoint}`;
@@ -61,7 +66,7 @@ class LunchMoney {
     }
     getAssets() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.get('/v1/assets');
+            return (yield this.get('/v1/assets')).assets;
         });
     }
     getPlaidAccounts() {
@@ -79,13 +84,26 @@ class LunchMoney {
             return (yield this.get('/v1/categories')).categories;
         });
     }
-    createTransactions(transactions, applyRules = false, checkForRecurring = false, debitAsNegative = false) {
+    createCategory(name, description, isIncome, excludeFromBudget, excludeFromTotals) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.post('/v1/categories', {
+                name,
+                description,
+                is_income: isIncome,
+                exclude_from_budget: excludeFromBudget,
+                exclude_from_totals: excludeFromTotals
+            });
+            return response;
+        });
+    }
+    createTransactions(transactions, applyRules = false, checkForRecurring = false, debitAsNegative = false, skipBalanceUpdate = true) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.post('/v1/transactions', {
                 transactions: transactions,
                 apply_rules: applyRules,
                 check_for_recurring: checkForRecurring,
-                debit_as_negative: debitAsNegative
+                debit_as_negative: debitAsNegative,
+                skip_balance_update: skipBalanceUpdate,
             });
             return response;
         });
