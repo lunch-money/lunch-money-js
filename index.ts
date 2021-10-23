@@ -99,6 +99,7 @@ export interface Tag {
 export interface TransactionsEndpointArguments {
 	start_date?: string,
 	end_date?: string,
+	tag_id?: number,
 	debit_as_negative?: boolean,
 }
 
@@ -118,6 +119,10 @@ export class LunchMoney {
 
 	async post( endpoint: string, args?: EndpointArguments ) {
 		return this.request( 'POST', endpoint, args );
+	}
+
+	async delete(endpoint: string, args?: EndpointArguments) : Promise<any> {
+		return this.request( 'DELETE', endpoint, args );
 	}
 
 	async request( method: "GET" | "POST" | "PUT" | "DELETE", endpoint: string, args?: EndpointArguments ) {
@@ -151,7 +156,7 @@ export class LunchMoney {
 	}
 
 	async getAssets() : Promise<Asset[]> {
-		return this.get( '/v1/assets' );
+		return (await this.get( '/v1/assets' )).assets;
 	}
 
 	async getPlaidAccounts() : Promise<PlaidAccount[]> {
@@ -166,12 +171,25 @@ export class LunchMoney {
 		return ( await this.get( '/v1/categories' ) ).categories;
 	}
 
-	async createTransactions( transactions: DraftTransaction[], applyRules = false, checkForRecurring = false, debitAsNegative = false ) : Promise<any> {
+	async createCategory( name: string, description: string, isIncome: boolean, excludeFromBudget: boolean, excludeFromTotals: boolean ) : Promise<any> {
+		const response = await this.post( '/v1/categories', {
+			name,
+			description,
+			is_income: isIncome,
+			exclude_from_budget: excludeFromBudget,
+			exclude_from_totals: excludeFromTotals
+		} );
+
+		return response;
+	}
+
+	async createTransactions( transactions: DraftTransaction[], applyRules = false, checkForRecurring = false, debitAsNegative = false, skipBalanceUpdate = true ) : Promise<any> {
 		const response = await this.post( '/v1/transactions', {
 			transactions: transactions,
 			apply_rules: applyRules,
 			check_for_recurring: checkForRecurring,
-			debit_as_negative: debitAsNegative
+			debit_as_negative: debitAsNegative,
+			skip_balance_update: skipBalanceUpdate,
 		} );
 
 		return response;
