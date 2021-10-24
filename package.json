@@ -18,7 +18,11 @@
   ],
   "author": "Joe Hoyle",
   "contributors": [
-    "Michael Bianco (https://mikebian.co/about)"
+    {
+      "name": "Michael Bianco",
+      "email": "mike@mikebian.co",
+      "url": "https://mikebian.co/about"
+    }
   ],
   "license": "MIT",
   "bugs": {
