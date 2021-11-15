@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.LunchMoney = void 0;
 const isomorphic_fetch_1 = __importDefault(require("isomorphic-fetch"));
 const base = 'https://dev.lunchmoney.app';
 class LunchMoney {
@@ -26,6 +27,11 @@ class LunchMoney {
     post(endpoint, args) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.request('POST', endpoint, args);
+        });
+    }
+    delete(endpoint, args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('DELETE', endpoint, args);
         });
     }
     request(method, endpoint, args) {
@@ -48,7 +54,7 @@ class LunchMoney {
                 options.body = JSON.stringify(args);
                 headers.set('Content-Type', 'application/json');
             }
-            const response = yield isomorphic_fetch_1.default(url, options);
+            const response = yield (0, isomorphic_fetch_1.default)(url, options);
             if (response.status > 399) {
                 const r = yield response.text();
                 throw new Error(r);
@@ -60,7 +66,7 @@ class LunchMoney {
     }
     getAssets() {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.get('/v1/assets');
+            return (yield this.get('/v1/assets')).assets;
         });
     }
     getPlaidAccounts() {
@@ -73,16 +79,35 @@ class LunchMoney {
             return (yield this.get('/v1/transactions', args)).transactions;
         });
     }
-    createTransactions(transactions, applyRules = false, checkForRecurring = false, debitAsNegative = false) {
+    getCategories() {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.get('/v1/categories')).categories;
+        });
+    }
+    createCategory(name, description, isIncome, excludeFromBudget, excludeFromTotals) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const response = yield this.post('/v1/categories', {
+                name,
+                description,
+                is_income: isIncome,
+                exclude_from_budget: excludeFromBudget,
+                exclude_from_totals: excludeFromTotals
+            });
+            return response;
+        });
+    }
+    createTransactions(transactions, applyRules = false, checkForRecurring = false, debitAsNegative = false, skipBalanceUpdate = true) {
         return __awaiter(this, void 0, void 0, function* () {
             const response = yield this.post('/v1/transactions', {
                 transactions: transactions,
                 apply_rules: applyRules,
                 check_for_recurring: checkForRecurring,
-                debit_as_negative: debitAsNegative
+                debit_as_negative: debitAsNegative,
+                skip_balance_update: skipBalanceUpdate,
             });
             return response;
         });
     }
 }
+exports.LunchMoney = LunchMoney;
 exports.default = LunchMoney;

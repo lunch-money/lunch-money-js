@@ -6,8 +6,6 @@
 npm install lunch-money
 ```
 
-(waiting NPM approval, not yet working!)
-
 The NPM module also makes types available to TypeScript.
 
 ## Usage
@@ -24,15 +22,23 @@ lunchMoney.getAssets().then( ( assets: Asset[] ) => {
 } );
 ```
 
+Or, if you are using ESM:
+
+```javascript
+import {LunchMoney} from 'lunch-money'
+const lunchMoney = new LunchMoney( { token: 'my-api-token' } );
+const assets = await lunchMoney.getAssets();
+```
+
 ## API
 
-Get all assets
+Get all assets (manually managed accounts):
 
 ```typescript
 LunchMoney.getAssets() : Promise<Asset>
 ```
 
-Get all transactions
+Get all transactions:
 
 ```typescript
 LunchMoney.getTransactions( arguments?: TransactionsEndpointArguments ) : Promise<Transaction[]>
@@ -48,3 +54,9 @@ LunchMoney.createTransactions(
 	debitAsNegative = false
 ) : Promise<any>
 ```
+
+## Examples
+
+There are many open source projects with example code you can use to quickly build your integration:
+
+https://lunchmoney.dev/#awesome-projects
