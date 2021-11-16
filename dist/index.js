@@ -29,6 +29,11 @@ class LunchMoney {
             return this.request('POST', endpoint, args);
         });
     }
+    put(endpoint, args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.request('PUT', endpoint, args);
+        });
+    }
     delete(endpoint, args) {
         return __awaiter(this, void 0, void 0, function* () {
             return this.request('DELETE', endpoint, args);
@@ -67,6 +72,11 @@ class LunchMoney {
     getAssets() {
         return __awaiter(this, void 0, void 0, function* () {
             return (yield this.get('/v1/assets')).assets;
+        });
+    }
+    updateAsset(endpointArgs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.put('/v1/assets/' + endpointArgs.id, endpointArgs));
         });
     }
     getPlaidAccounts() {
