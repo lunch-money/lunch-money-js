@@ -24,6 +24,26 @@ export interface Asset {
 	created_at: string;
 }
 
+export interface AssetUpdate {
+	id: number;
+	type_name?: "employee compensation"
+	  | "cash"
+	  | "vehicle"
+	  | "loan"
+	  | "cryptocurrency"
+	  | "investment"
+	  | "other"
+	  | "credit"
+	  | "real estate";
+	subtype_name?: string | null;
+	name?: string;
+	display_name?: string | null;
+	balance?: string;
+	balance_as_of?: string;
+	currency?: string;
+	institution_name?: string | null;
+}
+
 export interface PlaidAccount {
 	id: number;
 	date_linked: string;
@@ -121,12 +141,15 @@ export class LunchMoney {
 		return this.request( 'POST', endpoint, args );
 	}
 
+	async put( endpoint: string, args?: EndpointArguments ) {
+		return this.request( 'PUT', endpoint, args );
+	}
+
 	async delete(endpoint: string, args?: EndpointArguments) : Promise<any> {
 		return this.request( 'DELETE', endpoint, args );
 	}
 
 	async request( method: "GET" | "POST" | "PUT" | "DELETE", endpoint: string, args?: EndpointArguments ) {
-
 		let url = `${ base }${ endpoint }`;
 		if ( method === 'GET' && args ) {
 			url += '?';
@@ -157,6 +180,10 @@ export class LunchMoney {
 
 	async getAssets() : Promise<Asset[]> {
 		return (await this.get( '/v1/assets' )).assets;
+	}
+
+	async updateAsset( endpointArgs: AssetUpdate ) : Promise<any> {
+		return ( await this.put( '/v1/assets/' + endpointArgs.id, endpointArgs) );
 	}
 
 	async getPlaidAccounts() : Promise<PlaidAccount[]> {
