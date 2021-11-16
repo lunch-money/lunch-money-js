@@ -11,6 +11,17 @@ export interface Asset {
     institution_name?: string | null;
     created_at: string;
 }
+export interface AssetUpdate {
+    id: number;
+    type_name?: "employee compensation" | "cash" | "vehicle" | "loan" | "cryptocurrency" | "investment" | "other" | "credit" | "real estate";
+    subtype_name?: string | null;
+    name?: string;
+    display_name?: string | null;
+    balance?: string;
+    balance_as_of?: string;
+    currency?: string;
+    institution_name?: string | null;
+}
 export interface PlaidAccount {
     id: number;
     date_linked: string;
@@ -87,9 +98,11 @@ export declare class LunchMoney {
     });
     get(endpoint: string, args?: EndpointArguments): Promise<any>;
     post(endpoint: string, args?: EndpointArguments): Promise<any>;
+    put(endpoint: string, args?: EndpointArguments): Promise<any>;
     delete(endpoint: string, args?: EndpointArguments): Promise<any>;
     request(method: "GET" | "POST" | "PUT" | "DELETE", endpoint: string, args?: EndpointArguments): Promise<any>;
     getAssets(): Promise<Asset[]>;
+    updateAsset(endpointArgs: AssetUpdate): Promise<any>;
     getPlaidAccounts(): Promise<PlaidAccount[]>;
     getTransactions(args?: TransactionsEndpointArguments): Promise<Transaction[]>;
     getCategories(): Promise<Category[]>;
