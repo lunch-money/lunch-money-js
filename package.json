@@ -1,7 +1,7 @@
 {
   "name": "lunch-money",
-  "version": "0.0.1",
-  "description": "",
+  "version": "0.5.0",
+  "description": "API bindings for the Lunch Money personal finance application",
   "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
