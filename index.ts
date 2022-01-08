@@ -194,6 +194,14 @@ export class LunchMoney {
 		return ( await this.get( '/v1/transactions', args ) ).transactions;
 	}
 
+	async getTransaction( id: number, args?: EndpointArguments ) : Promise<Transaction> {
+		return ( await this.get( '/v1/transactions/' + id, args ) );
+	}
+
+	async updateTransaction(id: number, transaction: any) : Promise<any> {
+		return ( await this.put( '/v1/transactions/' + id, { transaction: transaction } ) );
+	}
+
 	async getCategories( ) : Promise<Category[]> {
 		return ( await this.get( '/v1/categories' ) ).categories;
 	}
