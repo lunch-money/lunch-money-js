@@ -105,6 +105,8 @@ export declare class LunchMoney {
     updateAsset(endpointArgs: AssetUpdate): Promise<any>;
     getPlaidAccounts(): Promise<PlaidAccount[]>;
     getTransactions(args?: TransactionsEndpointArguments): Promise<Transaction[]>;
+    getTransaction(id: number, args?: EndpointArguments): Promise<Transaction>;
+    updateTransaction(id: number, transaction: any): Promise<any>;
     getCategories(): Promise<Category[]>;
     createCategory(name: string, description: string, isIncome: boolean, excludeFromBudget: boolean, excludeFromTotals: boolean): Promise<any>;
     createTransactions(transactions: DraftTransaction[], applyRules?: boolean, checkForRecurring?: boolean, debitAsNegative?: boolean, skipBalanceUpdate?: boolean): Promise<any>;

@@ -89,6 +89,16 @@ class LunchMoney {
             return (yield this.get('/v1/transactions', args)).transactions;
         });
     }
+    getTransaction(id, args) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.get('/v1/transactions/' + id, args));
+        });
+    }
+    updateTransaction(id, transaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return (yield this.put('/v1/transactions/' + id, { transaction: transaction }));
+        });
+    }
     getCategories() {
         return __awaiter(this, void 0, void 0, function* () {
             return (yield this.get('/v1/categories')).categories;
