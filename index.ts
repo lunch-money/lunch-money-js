@@ -48,7 +48,12 @@ export interface PlaidAccount {
 	limit?: number | null;
 }
 
-export type TransactionStatus = "cleared" | "uncleared" | "recurring" | "recurring_suggested";
+export enum TransactionStatus {
+	CLEARED = "cleared",
+	UNCLEARED = "uncleared",
+	RECURRING = "recurring",
+	RECURRING_SUGGESTED = "recurring_suggested"
+}
 export interface Transaction {
 	id: number,
 	date: string,
@@ -76,7 +81,7 @@ export interface TransactionUpdate {
 	asset_id: number;
 	recurring_id: number;
 	notes: string;
-	status: "cleared" | "uncleared";
+	status: TransactionStatus.CLEARED | TransactionStatus.UNCLEARED;
 	external_id: string;
 	tags: (number | string)[];
 }
@@ -105,7 +110,6 @@ export interface Category {
 	is_group:	boolean,
 	group_id?: number,
 }
-export type DraftTransactionStatus = "cleared" | "uncleared";
 export interface DraftTransaction {
 	date: string,
 	category_id?: number,
@@ -115,7 +119,7 @@ export interface DraftTransaction {
 	notes: string,
 	asset_id?: number,
 	recurring_id?: number,
-	status: DraftTransactionStatus,
+	status: TransactionStatus.CLEARED | TransactionStatus.UNCLEARED,
 	external_id?: string,
 }
 
