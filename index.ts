@@ -2,17 +2,11 @@ import fetch from 'isomorphic-fetch';
 
 const base = 'https://dev.lunchmoney.app';
 
+
+export type AssetTypeName = "employee compensation" | "cash" | "vehicle" | "loan" | "cryptocurrency" | "investment" | "other" | "credit" | "real estate";
 export interface Asset {
 	id: number;
-	type_name: "employee compensation"
-	  | "cash"
-	  | "vehicle"
-	  | "loan"
-	  | "cryptocurrency"
-	  | "investment"
-	  | "other"
-	  | "credit"
-	  | "real estate";
+	type_name: AssetTypeName;
 	subtype_name?: string | null;
 	name: string;
 	display_name?: string | null;
@@ -26,15 +20,7 @@ export interface Asset {
 
 export interface AssetUpdate {
 	id: number;
-	type_name?: "employee compensation"
-	  | "cash"
-	  | "vehicle"
-	  | "loan"
-	  | "cryptocurrency"
-	  | "investment"
-	  | "other"
-	  | "credit"
-	  | "real estate";
+	type_name?: AssetTypeName;
 	subtype_name?: string | null;
 	name?: string;
 	display_name?: string | null;
@@ -44,22 +30,17 @@ export interface AssetUpdate {
 	institution_name?: string | null;
 }
 
+export type PlaidAccountType = "credit" | "depository" | "brokerage" | "cash" | "loan" | "investment";
+export type PlaidAccountStatus = "active" | "inactive" | "relink" | "syncing" | "error" | "not found" | "not supported";
 export interface PlaidAccount {
 	id: number;
 	date_linked: string;
 	name: string;
-	type: "credit" | "depository" | "brokerage" | "cash" | "loan" | "investment";
+	type: PlaidAccountType
 	subtype?: string | null;
 	mask: string;
 	institution_name: string;
-	status:
-	  | "active"
-	  | "inactive"
-	  | "relink"
-	  | "syncing"
-	  | "error"
-	  | "not found"
-	  | "not supported";
+	status: PlaidAccountStatus;
 	last_import?: string | null;
 	balance: string;
 	currency: string;
@@ -67,6 +48,7 @@ export interface PlaidAccount {
 	limit?: number | null;
 }
 
+export type TransactionStatus = "cleared" | "uncleared" | "recurring" | "recurring_suggested";
 export interface Transaction {
 	id: number,
 	date: string,
@@ -77,12 +59,38 @@ export interface Transaction {
 	category_id?: number,
 	asset_id?: number,
 	plaid_account_id?: number,
-	status: "cleared" | "uncleared" | "recurring" | "recurring_suggested",
+	status: TransactionStatus,
 	parent_id?: number,
 	is_group: boolean,
 	group_id?: number,
 	tags?: Tag,
 	external_id?: string,
+}
+
+export interface TransactionUpdate {
+	date: string;
+	category_id: number;
+	payee: string;
+	amount?: number | string;
+	currency: string;
+	asset_id: number;
+	recurring_id: number;
+	notes: string;
+	status: "cleared" | "uncleared";
+	external_id: string;
+	tags: (number | string)[];
+}
+
+export interface Split {
+	payee?: string,
+	date?: string,
+	category_id?: number,
+	notes?: string,
+	amount: string | number,
+}
+export interface TransactionUpdateResponse {
+	updated: boolean;
+	split?: Split
 }
 
 export interface Category {
@@ -97,7 +105,7 @@ export interface Category {
 	is_group:	boolean,
 	group_id?: number,
 }
-
+export type DraftTransactionStatus = "cleared" | "uncleared";
 export interface DraftTransaction {
 	date: string,
 	category_id?: number,
@@ -107,7 +115,7 @@ export interface DraftTransaction {
 	notes: string,
 	asset_id?: number,
 	recurring_id?: number,
-	status: "cleared" | "uncleared",
+	status: DraftTransactionStatus,
 	external_id?: string,
 }
 
@@ -198,7 +206,7 @@ export class LunchMoney {
 		return ( await this.get( '/v1/transactions/' + id, args ) );
 	}
 
-	async updateTransaction(id: number, transaction: any) : Promise<any> {
+	async updateTransaction(id: number, transaction: TransactionUpdate) : Promise<TransactionUpdateResponse> {
 		return ( await this.put( '/v1/transactions/' + id, { transaction: transaction } ) );
 	}
 
@@ -218,16 +226,14 @@ export class LunchMoney {
 		return response;
 	}
 
-	async createTransactions( transactions: DraftTransaction[], applyRules = false, checkForRecurring = false, debitAsNegative = false, skipBalanceUpdate = true ) : Promise<any> {
-		const response = await this.post( '/v1/transactions', {
+	async createTransactions(transactions: DraftTransaction[], applyRules = false, checkForRecurring = false, debitAsNegative = false, skipBalanceUpdate = true ) : Promise<any> {
+		return await this.post('/v1/transactions', {
 			transactions: transactions,
 			apply_rules: applyRules,
 			check_for_recurring: checkForRecurring,
 			debit_as_negative: debitAsNegative,
 			skip_balance_update: skipBalanceUpdate,
-		} );
-
-		return response;
+		});
 	}
 }
 
