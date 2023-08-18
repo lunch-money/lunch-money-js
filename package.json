@@ -2,6 +2,11 @@
   "name": "lunch-money",
   "version": "0.5.0",
   "description": "API bindings for the Lunch Money personal finance application",
+  "keywords": [
+    "lunch-money",
+    "lunchmoney",
+    "personal-finance"
+  ],
   "type": "commonjs",
   "main": "dist/index.js",
   "scripts": {
@@ -12,10 +17,6 @@
     "type": "git",
     "url": "git+ssh://git@github.com/lunch-money/lunch-money-js.git"
   },
-  "keywords": [
-    "lunch-money",
-    "lunchmoney"
-  ],
   "author": "Joe Hoyle",
   "contributors": [
     {
