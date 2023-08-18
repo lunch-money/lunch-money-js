@@ -12,9 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LunchMoney = void 0;
+exports.LunchMoney = exports.TransactionStatus = void 0;
 const isomorphic_fetch_1 = __importDefault(require("isomorphic-fetch"));
 const base = 'https://dev.lunchmoney.app';
+var TransactionStatus;
+(function (TransactionStatus) {
+    TransactionStatus["CLEARED"] = "cleared";
+    TransactionStatus["UNCLEARED"] = "uncleared";
+    TransactionStatus["RECURRING"] = "recurring";
+    TransactionStatus["RECURRING_SUGGESTED"] = "recurring_suggested";
+})(TransactionStatus = exports.TransactionStatus || (exports.TransactionStatus = {}));
 class LunchMoney {
     constructor(args) {
         this.token = args.token;
@@ -118,14 +125,13 @@ class LunchMoney {
     }
     createTransactions(transactions, applyRules = false, checkForRecurring = false, debitAsNegative = false, skipBalanceUpdate = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = yield this.post('/v1/transactions', {
+            return yield this.post('/v1/transactions', {
                 transactions: transactions,
                 apply_rules: applyRules,
                 check_for_recurring: checkForRecurring,
                 debit_as_negative: debitAsNegative,
                 skip_balance_update: skipBalanceUpdate,
             });
-            return response;
         });
     }
 }
