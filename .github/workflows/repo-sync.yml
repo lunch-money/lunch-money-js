@@ -1,0 +1,22 @@
+name: Sync Repo Metadata
+on:
+  push:
+    branches:
+      - main
+
+permissions: read-all
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Sync Repository Metadata
+        # uses: kbrashears5/github-action-repo-sync@v1.0.0
+        uses: iloveitaly/github-action-repo-sync@python
+        with:
+          TOKEN: ${{ secrets.GH_PERSONAL_TOKEN }}

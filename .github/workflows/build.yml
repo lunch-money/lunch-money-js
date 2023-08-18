@@ -1,0 +1,55 @@
+# .github/workflows/build_and_publish.yml
+
+name: Build and Publish to NPM
+on:
+  push:
+    branches:
+      - master
+
+# by default, permissions are read-only, read + write is required for git pushes
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: ASDF Parse
+        uses: kota65535/github-asdf-parse-action@v1.1.0
+        id: versions
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "${{ steps.versions.outputs.nodejs }}"
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build
+        run: npm run build
+
+      - name: Conventional Changelog Action
+        id: changelog
+        uses: TriPSs/conventional-changelog-action@v3
+        with:
+          github-token: ${{ secrets.github_token }}
+          version-file: "./package.json,./package-lock.json"
+          output-file: "CHANGELOG.md"
+
+      - name: Publish to NPM
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        run: npm publish
+        env:
+          # `gh secret set NPM_TOKEN --app actions --body $NPM_TOKEN`
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Github Release
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        uses: softprops/action-gh-release@v1
+        with:
+          # output options: https://github.com/TriPSs/conventional-changelog-action#outputs
+          body: ${{ steps.changelog.outputs.clean_changelog }}
+          tag_name: ${{ steps.changelog.outputs.tag }}
