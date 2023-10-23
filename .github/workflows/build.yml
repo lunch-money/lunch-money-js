@@ -23,7 +23,7 @@ jobs:
         uses: kota65535/github-asdf-parse-action@v1.1.0
         id: versions
 
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: "${{ steps.versions.outputs.nodejs }}"
           registry-url: 'https://registry.npmjs.org'
