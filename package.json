@@ -32,7 +32,7 @@
   "homepage": "https://github.com/lunch-money/lunch-money-js#readme",
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.38",
-    "@types/node": "^16.11.0",
+    "@types/node": "^20.10.7",
     "typescript": "^4.4.4"
   },
   "types": "dist/index.d.ts",
